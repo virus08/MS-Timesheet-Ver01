@@ -12,7 +12,7 @@
   <body>
     <!-- Nav bar -->
     <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-      <a class="navbar-brand" href="/">Node Graph Tutorial</a>
+      <a class="navbar-brand" href="/">Enterprise System</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -30,6 +30,9 @@
             </li>
             <li class="nav-item{{#if active.contacts}} active{{/if}}">
               <a class="nav-link" href="/contacts">Contacts</a>
+            </li>
+            <li class="nav-item{{#if active.timesheet}} active{{/if}}">
+              <a class="nav-link" href="/timesheet">Timesheet</a>
             </li>
           {{/if}}
         </ul>

@@ -12,6 +12,7 @@
     "debug": "~2.6.9",
     "dotenv": "^5.0.0",
     "express": "~4.15.5",
+    "express-vue": "^5.6.5",
     "hbs": "~4.0.1",
     "jsonwebtoken": "^8.1.1",
     "morgan": "~1.9.0",
