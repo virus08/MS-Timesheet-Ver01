@@ -23,8 +23,9 @@ router.get('/', async function(req, res, next) {
 
     // Set start of the calendar view to today at midnight
     const start = new Date(new Date().setHours(0,0,0));
+    start.setDate(1);
     // Set end of the calendar view to 7 days from start
-    const end = new Date(new Date(start).setDate(start.getDate() + 7));
+    const end = new Date(new Date(start).setDate(start.getDate() + 31));
     
     try {
       // Get the first 10 events for the coming week
@@ -32,7 +33,7 @@ router.get('/', async function(req, res, next) {
       .api(`/me/calendarView?startDateTime=${start.toISOString()}&endDateTime=${end.toISOString()}`)
       .top(10)
       .select('subject,start,end,attendees')
-      .orderby('start/dateTime DESC')
+      .orderby('start/dateTime ASC')
       .get();
 
       parms.events = result.value;

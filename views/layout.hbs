@@ -8,6 +8,12 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+
+        <!-- Data Tables -->
+    <link href="css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
+    <link href="css/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet">
+
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
   </head>
@@ -30,15 +36,21 @@
                   <a class="nav-link" href="/">Home</a>
                 </li>
                 {{#if user}}
+                <!--
                   <li class="nav-item{{#if active.inbox}} active{{/if}}">
-                    <a class="nav-link" href="/mail">Inbox</a>
-                  </li>
-                  <li class="nav-item{{#if active.calendar}} active{{/if}}">
-                    <a class="nav-link" href="/calendar">Calendar</a>
+                    <a class="nav-link" href="/mail">Email</a>
                   </li>
                   <li class="nav-item{{#if active.contacts}} active{{/if}}">
                     <a class="nav-link" href="/contacts">Contacts</a>
                   </li>
+                -->
+                  <li class="nav-item{{#if active.inbox}} active{{/if}}">
+                    <a class="nav-link" href="/mail">Email</a>
+                  </li>
+                  <li class="nav-item{{#if active.calendar}} active{{/if}}">
+                    <a class="nav-link" href="/calendar">Calendar</a>
+                  </li>
+
                   <li class="nav-item{{#if active.timesheet}} active{{/if}}">
                     <a class="nav-link" href="/timesheet">Timesheet</a>
                   </li>
@@ -61,12 +73,11 @@
                   </li>
                 {{/if}}
               </ul>
+
             </div>
           </nav>
         </div>
         <!-- Main body -->
-        <div class="wrapper wrapper-content">
-          <div class="container">
             <div class="row">
               {{{body}}}
             </div>
@@ -79,8 +90,7 @@
                 </div>
               </div>
             {{/if}}
-          </div>
-        </div>
+          
         <div class="footer">
             <div class="pull-right">
                 <strong> @ </strong><small>Enterprise System</small>
@@ -101,9 +111,62 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="js/plugins/jeditable/jquery.jeditable.js"></script>
+    <!-- Data Tables -->
+    <script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script src="js/plugins/dataTables/dataTables.responsive.js"></script>
+    <script src="js/plugins/dataTables/dataTables.tableTools.min.js"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
+    
+    <script src="js/vue.js"></script>
+    <script src="js/main.js"></script>
+    <script src="https://rawgit.com/matfish2/vue-tables-2/master/dist/vue-tables-2.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.dataTables-example').dataTable({
+                responsive: true,
+                "dom": 'T<"clear">lfrtip',
+                "tableTools": {
+                    "sSwfPath": "js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
+                }
+            });
+        });
+
+    </script>
+    <style>
+        body.DTTT_Print {
+            background: #fff;
+
+        }
+        .DTTT_Print #page-wrapper {
+            margin: 0;
+            background:#fff;
+        }
+
+        button.DTTT_button, div.DTTT_button, a.DTTT_button {
+            border: 1px solid #e7eaec;
+            background: #fff;
+            color: #676a6c;
+            box-shadow: none;
+            padding: 6px 8px;
+        }
+        button.DTTT_button:hover, div.DTTT_button:hover, a.DTTT_button:hover {
+            border: 1px solid #d2d2d2;
+            background: #fff;
+            color: #676a6c;
+            box-shadow: none;
+            padding: 6px 8px;
+        }
+
+        .dataTables_filter label {
+            margin-right: 5px;
+
+        }
+    </style>
   </body>
 </html>

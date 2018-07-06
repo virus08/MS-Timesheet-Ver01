@@ -1,10 +1,14 @@
 {{! Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See LICENSE.txt in the project root for license information.}}
-<div class="jumbotron">
-  <h1>Node Graph Tutorial</h1>
-  <p class="lead">This sample app shows how to use the Microsoft Graph API to access Outlook data from Node.js</p>
-  {{#if user}}
-    <p>Welcome {{user}}!</p>
-  {{else}}
-    <a class="btn btn-primary btn-large" href="{{signInUrl}}">Click here to login</a>
-  {{/if}}
+<div class="row">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content text-center p-md">
+      <h1><span class="text-navy">Enterprise system</span> <small>This is presales performance report system </small></h1>
+      <p> If see someting worng please contact wanchai@vstecs.co.th to fix it</p>
+      {{#if user}}
+        <p>Welcome {{user}}</p>
+      {{else}}
+        <a class="btn btn-primary btn-large" href="{{signInUrl}}">Click here to login</a>
+      {{/if}}
+    </div>
+  </div>
 </div>

@@ -12,7 +12,6 @@ router.get('/', async function(req, res, next) {
 
   if (accessToken && userName) {
     parms.user = userName;
-
     // Initialize Graph client
     const client = graph.Client.init({
       authProvider: (done) => {

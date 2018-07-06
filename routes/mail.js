@@ -6,7 +6,7 @@ var graph = require('@microsoft/microsoft-graph-client');
 
 /* GET /mail */
 router.get('/', async function(req, res, next) {
-  let parms = { title: 'Inbox', active: { inbox: true } };
+  let parms = { title: 'TASK', active: { inbox: true } };
 
   const accessToken = await authHelper.getAccessToken(req.cookies, res);
   const userName = req.cookies.graph_user_name;
@@ -20,18 +20,32 @@ router.get('/', async function(req, res, next) {
         done(null, accessToken);
       }
     });
-
     try {
-      // Get the 10 newest messages from inbox
       const result = await client
-      .api('/me/mailfolders(\'AAMkAGMxYmI4NzRlLWVkMzktNDA2Mi04NGM3LWYzYmMxZTE1Y2Y4NQAuAAAAAAC6mjL8NI9kSLql72OZM8ZbAQACaQ_GlPH1SrFPN6wAKk3XAAFXLG1fAAA=\')/messages')
-      .top(100)
-      .select('subject,from,receivedDateTime,isRead')
-      .orderby('receivedDateTime DESC')
+      .api('/me/mailfolders')
+      .filter("startswith(displayName, 'TASK')")
+      .select('id,displayName')
       .get();
-
-      parms.messages = result.value;
-      res.render('mail', parms);
+      const xapi ="/me/mailfolders('"+result.value[0].id+"')/messages";
+      //parms.debug = xapi;
+      try {
+        // Get the 10 newest messages from inbox
+        const xresult = await client
+        .api(xapi)
+        //.top(10)
+        .select('subject,from,receivedDateTime,isRead')
+        .orderby('receivedDateTime DESC')
+        .get();
+  
+        parms.messages = xresult.value;
+        //parms.debug = JSON.stringify(xresult.value, null, 2);
+        res.render('mail', parms);
+      } catch (err) {
+        parms.message = 'Error retrieving messages';
+        parms.error = { status: `${err.code}: ${err.message}` };
+        parms.debug = JSON.stringify(err.body, null, 2);
+        res.render('error', parms);
+      }
     } catch (err) {
       parms.message = 'Error retrieving messages';
       parms.error = { status: `${err.code}: ${err.message}` };
@@ -39,7 +53,9 @@ router.get('/', async function(req, res, next) {
       res.render('error', parms);
     }
     
-  } else {
+
+    
+  } else {  
     // Redirect to home
     res.redirect('/');
   }
