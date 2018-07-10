@@ -1,6 +1,34 @@
-
+Vue.filter('formatDate', function(value) {
+	if (value) {
+		return moment(String(value)).format('Do MMMM YYYY')
+	}
+})
+/*
+Vue.component('test', { 
+	 props: ['source'],
+	 template: '<div>{{ list. }}</div>',
+	 data: function () {
+	    return {
+	    	list: null
+	    }
+	  },
+	  methods: {
+		  getUsers: function(){
+	            this.$http.get(this.source).then(function(response){
+	                this.list = response.data;
+	            }, function(error){
+	                console.log(error.statusText);
+	            });
+	        }
+	    },
+	    mounted: function () {
+	        this.getUsers();
+	    }
+	})
+ */
+/*====================================================================================================*/ 
 	Vue.component('timesheet',{
-		props: ['title','datatable'],
+		props: ['title','accountname','source'],
 		template:`
 		<div class="row">
 			<div class="col-lg-12">
@@ -21,35 +49,46 @@
 						</div>
 					</div>
 					<div class="ibox-content">
-						<div><!-- ---------------------------------Table-------------------------------------------- -->
-							
+						<div>
+							{{accountname}} = {{source}} 
+							<v-client-table> </v-client-table>
 						</div>              
 					</div>
 				</div>
 			</div>
 		</div>
 	`,
-	});
+	data: function () {
+	    return {
+			list:[]
+	    }
+	  },
+	  methods: {
+		  gettimesheet: function(){
+			var Mydata;
+			const reqapi = this.source 
+			var api = reqapi + '?filter[where][Name_Surname]='+ this.accountname
+			var api = api + '&filter[where][create_date][gt]=2018-01&filter[where][Job_date][gt]=2018-01'
+			var api = api + '&filter[order]=id%20DESC&filter[limit]=100'
+			$.ajax({
+				url: api ,
+				dataType: 'json',
+				async: false,
+				success: function(data) {
+					Mydata = data
+				}
+			  });
+			this.list=Mydata
+		  },
+		  getUsers: function(){
+				this.gettimesheet();
+				//alert(this.list)
+	        }
+	    },
+	    mounted: function () {
+	        this.getUsers();
+	    }
+	});	
 	
-	
-var app = new Vue({
-    el: '#wrapper',
-    ready: function () {
-        document.title = this.title;
-    },
-    data: {
-		
-        title: 'My Title',
-		
-		profile:[],
-    },
-    watch: {
-        title: function (val, old) {
-            document.title = val
-        }
-    },
-	
-	mounted(){
-			document.title = this.title;
-		}
-})
+Vue.use(VueTables.ClientTable);	
+var app = new Vue().$mount('#wrapper')
