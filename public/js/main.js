@@ -50,8 +50,9 @@ Vue.component('test', {
 					</div>
 					<div class="ibox-content">
 						<div>
-							{{accountname}} = {{source}} 
-							<v-client-table> </v-client-table>
+							<v-client-table :data="list" :columns="columns" :options="options" class="table-responsive">
+								<a slot="edit" slot-scope="props" class="fa fa-edit" href="#"></a>
+							</v-client-table>
 						</div>              
 					</div>
 				</div>
@@ -60,7 +61,29 @@ Vue.component('test', {
 	`,
 	data: function () {
 	    return {
-			list:[]
+			list:[],
+			columns: ['id', 'Job_Header', 'Job_detail','Job_Hours','Job_date','edit'],
+			options: {
+				headings: {
+					id:'[iD]',
+					Job_Header: 'Name',
+					Job_detail: 'Detail',
+					Job_Hours:'Hour',
+					Job_date:'Deadline'
+					//edit:'Action'
+				},
+				perPage:6,
+				perPageValues:[6,10,15,30],
+				dateColumns: ['Job_date'],
+				sortable:['Job_Header','Job_detail','Job_Hours','Job_date'],
+				filterable:['Job_Header','Job_detail','Job_date'],
+				sortIcon: {
+					is:'fa-sort',
+					base:'fa',
+					up:'fa-sort-up',
+					down:'fa-sort-down'
+				}
+			}
 	    }
 	  },
 	  methods: {
@@ -79,16 +102,13 @@ Vue.component('test', {
 				}
 			  });
 			this.list=Mydata
-		  },
-		  getUsers: function(){
-				this.gettimesheet();
-				//alert(this.list)
-	        }
+		  }
 	    },
 	    mounted: function () {
-	        this.getUsers();
+	        this.gettimesheet();
 	    }
 	});	
-	
+
+
 Vue.use(VueTables.ClientTable);	
 var app = new Vue().$mount('#wrapper')
