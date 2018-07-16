@@ -15,7 +15,7 @@ router.get('/', async function(req, res, next) {
     parms.debug = `User: ${userName}\nAccess Token: ${accessToken}`;
   } else {
     parms.signInUrl = authHelper.getAuthUrl();
-    parms.debug = parms.signInUrl;
+    //parms.debug = parms.signInUrl;
   }
 
   res.render('index', parms);

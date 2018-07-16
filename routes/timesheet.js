@@ -13,7 +13,7 @@ router.get('/1', function (req, res) {
 }); 
 
 router.get('/', async function(req, res, next) {
-  let parms = { title: 'Timesheet', active: { timesheet: true },source:'http://es-timesheet.fuangmali.info:8081/api/timesheets' };
+  let parms = { title: 'Timesheet', active: { timesheet: true },source:'http://es-timesheet.fuangmali.info:8081' };
 
   const accessToken = await authHelper.getAccessToken(req.cookies, res);
   const userName = req.cookies.graph_user_name;
@@ -46,7 +46,8 @@ router.get('/', async function(req, res, next) {
       .get();
       
       parms.AccountName = result.givenName+' '+result.surname;
-      parms.debug = JSON.stringify(parms,null,2);
+      parms.UID= result.id
+      //parms.debug = JSON.stringify(parms,null,2);
       res.render('timesheet', parms);
     } catch (err) {
       parms.message = 'Error retrieving messages';
