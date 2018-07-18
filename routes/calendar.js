@@ -53,7 +53,7 @@ router.get('/', async function(req, res, next) {
       .get();
 
       parms.events = JSON.stringify(result.value, null, 2);
-      parms.debug = JSON.stringify(parms, null, 2);
+      //parms.debug = JSON.stringify(parms, null, 2);
       res.render('calendar', parms);
     } catch (err) {
       parms.message = 'Error retrieving events';

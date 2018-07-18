@@ -33,7 +33,7 @@ Vue.component('test', {
  */
 /*====================================================================================================*/
 Vue.component('calendar', { 
-	props: ['source','title','events','accountname','UID'],
+	props: ['source','title','events','accountname','uid'],
 	template: `
 	<div class="row">
 	<div class="col-lg-12">
@@ -115,7 +115,7 @@ Vue.component('calendar', {
 											</select>
 											<label>Job SOW</label>
 											<select class="form-control m-b" v-model="newTask.Job_SOW">
-													<option v-for="option in edSOW" :value="option.Name"> {{option.Name}}&nbsp;[{{option.Hours}}]</option>
+													<option v-for="option in edSOW" :value="option.Name"> {{option.Name}}</option>
 											</select>
 											<label>Project-Track</label> 	
 											<select class="form-control m-b" v-model="newTask.Projid" >
@@ -268,12 +268,29 @@ Vue.component('calendar', {
 				//error
 				alert(response.body.error.message)
 			});
-		  }
+		  },
+		  AddNewTask : function (myTimesheet){
+			var API = this.source + '/api/timesheets'
+			var API_AddNewTask = API
+			//this.newTask.Name_Surname = this.accountname;
+			//this.newTask.UID = this.uid;
+			//myTimesheet.modify_date = Date.now()
+			//this.newTask.Job_Hours = this.edSOW.filter(list => list.Name == this.newTask.Job_SOW )[0].Hours
+			this.$http.post(API_AddNewTask,this.newTask).then((response) => {
+				  //success
+				// alert('Add:'+ response.body.Job_Header+'On'+response.body.modify_date)
+				this.gettimesheet();
+				this.newTask= {}
+				}, (response) => {
+				//error
+				alert(response.body.error.message)
+				});
+			}
 	   },
 	   mounted: function () {
 		   this.list=JSON.parse(this.events)
 		   this.newTask.Name_Surname= this.accountname;
-		   this.newTask.UID= this.UID
+		   this.newTask.UID= this.uid
 		   this.getadJobType();
 		   this.getadTech();
 		   this.getadBand();
