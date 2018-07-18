@@ -1,0 +1,184 @@
+{{! Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See LICENSE.txt in the project root for license information.}}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{{title}}</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+
+        <!-- Data Tables -->
+    <link href="css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
+    <link href="css/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet">
+
+    <link href="css/vuetify.min.css" rel="stylesheet">
+    <link href="css/font-roboto.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+  
+  <body class="top-navigation">
+    <div id="wrapper">
+      <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom white-bg">
+        <!-- Nav bar -->
+          <nav class="navbar navbar-static-top" role="navigation">
+            <div class="navbar-header">
+                      <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+                          <i class="fa fa-reorder"></i>
+                      </button>
+                      <a href="/" class="navbar-brand">Enterprise System</a>
+            </div>
+            <div class="navbar-collapse collapse" id="navbar">
+              <ul class="nav navbar-nav">
+                <li class="{{#if active.home}} active{{/if}}">
+                  <a class="nav-link" href="/">Home</a>
+                </li>
+                {{#if user}}
+                <!--
+                  <li class="nav-item{{#if active.inbox}} active{{/if}}">
+                    <a class="nav-link" href="/mail">Email</a>
+                  </li>
+                  <li class="nav-item{{#if active.contacts}} active{{/if}}">
+                    <a class="nav-link" href="/contacts">Contacts</a>
+                  </li>
+                  
+                  <li class="nav-item{{#if active.inbox}} active{{/if}}">
+                    <a class="nav-link" href="/mail">Email</a>
+                  </li>  -->
+                  <li class="nav-item{{#if active.calendar}} active{{/if}}">
+                    <a class="nav-link" href="/calendar">Calendar</a>
+                  </li>
+
+                  <li class="nav-item{{#if active.timesheet}} active{{/if}}">
+                    <a class="nav-link" href="/timesheet">Timesheet</a>
+                  </li>
+                {{/if}}
+              </ul>
+              <ul class="nav navbar-top-links navbar-right">
+                {{#if user}}
+                  <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{user}}</a>
+                    <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                      <li>
+                        <a href="/authorize/signout">Sign Out</a>
+                      </li>
+                        
+                    </ul>
+                  </li>
+                {{else}}
+                  <li>
+                    <a href="{{signInUrl}}">Sign In</a>
+                  </li>
+                {{/if}}
+              </ul>
+
+            </div>
+          </nav>
+        </div>
+        <!-- Main body -->
+            <div class="row">
+              {{{body}}}
+            </div>
+            <!-- Debug output -->
+            {{#if debug}}
+              <div class="row card">
+                <div class="card-body">
+                  <h5 class="card-title">Debug</h5>
+                  <pre class="bg-light border p-3"><code>{{debug}}</code></pre>
+                </div>
+              </div>
+            {{/if}}
+          
+        <div class="footer">
+            <div class="pull-right">
+                <strong> @ </strong><small>Enterprise System</small>
+            </div>
+            <div>
+                <strong>Copyright</strong> VSTECS <small>(Thailand) </small>Co.,Ltd. &copy; 2018-2019
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="js/plugins/jeditable/jquery.jeditable.js"></script>
+    <!-- Data Tables -->
+    <script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script src="js/plugins/dataTables/dataTables.responsive.js"></script>
+    <script src="js/plugins/dataTables/dataTables.tableTools.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="js/inspinia.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+
+    <!-- Custom and plugin javascript 
+    <script src="js/vue.js"></script>
+    <script src="js/vue-tables-2.min.js"></script>
+    -->
+    
+    <script src="js/moment.min.js"></script>
+    <script src="js/vue-resource.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@1.1.4/dist/vuetify.min.js"></script>
+    <script src="js/main.js"></script>
+
+<!-- 
+    <script>
+        $(document).ready(function() {
+            $('.dataTables-example').dataTable({
+                responsive: true,
+                "dom": 'T<"clear">lfrtip',
+                "tableTools": {
+                    "sSwfPath": "js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
+                }
+            });
+        });
+
+    </script>
+--> 
+    <style>
+        body.DTTT_Print {
+            background: #fff;
+
+        }
+        .DTTT_Print #page-wrapper {
+            margin: 0;
+            background:#fff;
+        }
+
+        button.DTTT_button, div.DTTT_button, a.DTTT_button {
+            border: 1px solid #e7eaec;
+            background: #fff;
+            color: #676a6c;
+            box-shadow: none;
+            padding: 6px 8px;
+        }
+        button.DTTT_button:hover, div.DTTT_button:hover, a.DTTT_button:hover {
+            border: 1px solid #d2d2d2;
+            background: #fff;
+            color: #676a6c;
+            box-shadow: none;
+            padding: 6px 8px;
+        }
+
+        .dataTables_filter label {
+            margin-right: 5px;
+
+        }
+    </style>
+  </body>
+</html>
