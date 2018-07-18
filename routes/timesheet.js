@@ -3,7 +3,7 @@ var express = require('express');
 var router = express.Router();
 var authHelper = require('../helpers/auth');
 var graph = require('@microsoft/microsoft-graph-client');
-var resClient = require('node-rest-client').Client;
+//var resClient = require('node-rest-client').Client;
  
 //var timesheet = new resClient();
 
