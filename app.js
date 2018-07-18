@@ -15,6 +15,7 @@ var authorize = require('./routes/authorize');
 var calendar = require('./routes/calendar');
 // var contacts = require('./routes/contacts');
 var timesheet = require('./routes/timesheet');
+var project = require('./routes/project');
 const expressVueMiddleware = expressVue.init();
 
 
@@ -39,6 +40,8 @@ app.use('/authorize', authorize);
 app.use('/calendar', calendar);
 //app.use('/contacts', contacts);
 app.use('/timesheet', timesheet);
+app.use('/project', project);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

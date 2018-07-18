@@ -1,19 +1,3 @@
-const apiroot =  'http://es-timesheet.fuangmali.info:8081/api'
-// http://localhost:8080/api/users/login
-
-window.API = {
-    ROOT: apiroot ,
-    USER: apiroot +'/users/',
-    LOGIN: apiroot + '/users/login',
-    PROFILE: apiroot + '/profiles/',
-    TIMESHEET: apiroot + '/Timesheets',
-    SOW :apiroot + '/sows',
-    PROJECT :apiroot + '/projects',
-    TASKGROP :apiroot + '/jobtypes',
-    BRANDS:apiroot + '/brands',
-    TECH:apiroot + '/teches'
-}
-
 Vue.filter('formatDate', function(value) {
 	if (value) {
 		return moment(String(value)).format('D MMMM YY')
@@ -47,290 +31,6 @@ Vue.component('test', {
 	    }
 	})
  */
-
-Vue.component('task', { 
-	props: ['Project'],
-	template: `
-	<div :id="'faq'+Project.id" class="panel-collapse collapse faq-answer">
-    <div class="row" v-for="task in tasklists">
-      <div class="col-md-4">
-        {{task.Job_Header}}
-      </div>
-      <div class="col-md-5">
-        {{task.Job_detail}}
-      </div>
-      <div class="col-md-2">
-       <span class="tag-item"> {{task.Name_Surname}} </span>
-      </div>
-      <div class="col-md-1">
-        <a type="button" @click="removetaskfromproj(task)">
-							<i class="fa fa-times-circle-o"></i> 
-				</a>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-10"></div>
-      <div class="col-md-2 text-right">
-        <hr>
-        <a href="#" class="btn btn-white btn-sm" v-if="tasklists.length==0" @click="removeproj(Project.id)"><i class="fa fa-times"></i> Delete </a>
-      </div>
-    </div>
-    
-  </div>
-	`,
-	data: function () {
-	   return {
-		   tasklists: {}
-	   }
-	 },
-	 methods: {
-		removeproj:function(projid){
-			var API = 'http://'
-					var API_Remove_By_Proj_Id = API.PROJECT + '/' + projid
-					//Proj.modify_date = Date.now()
-					this.$http.delete(API_Remove_By_Proj_Id).then((response) => {
-							//success
-					  //alert('Update:'+ response.body.Job_Header+'On'+response.body.modify_date)
-					  location.reload()
-					  }, (response) => {
-					  //error
-					  alert(response.body.error.message)
-					  });
-				},
-			removetaskfromproj:function(mytask){
-			var API = window.API
-				var API_Update_By_Task_Id = API.TIMESHEET + '/' + mytask.id
-				mytask.modify_date = Date.now()
-				mytask.project=''
-				mytask.Projid=''
-				this.$http.put(API_Update_By_Task_Id,mytask).then((response) => {
-						//success
-				  //alert('Update:'+ response.body.Job_Header+'On'+response.body.modify_date)
-				  this.getTimesheet();
-				  //this.edTimesheet= {}
-				  }, (response) => {
-				  //error
-				  alert(response.body.error.message)
-				  });
-			  },
-			getTimesheet: function () {
-			  var API = window.API
-			  var API_Timesheet_By_project_ID = API.TIMESHEET + '?filter[where][Projid]='+ this.Project.id 
-			  this.$http.get(API_Timesheet_By_project_ID).then((response) => {
-				//success
-				this.tasklists = response.body
-			  }, (response) => {
-	  
-				//error
-				alert(response.body.error.message)
-			  });
-			}
-		},
-		created: function () {
-			this.getTimesheet();
-		},
-		mounted: function () {
-		  
-		}
-   })
-
-Vue.component('project', { 
-	props: ['source','uid'],
-	template: `
-	<div class="row">
-    <div class="col-lg-12">
-      <div class="wrapper wrapper-content animated fadeInRight">
-        <div class="ibox-content m-b-sm border-bottom">
-          <div class="text-center p-lg">
-            <h2> All projects assigned to this account</h2>
-            <div class="text-center p-lg">
-                                <span>add your Project </span>
-                                <a href="#addproject" data-toggle="modal" title="Create new project" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> <span class="bold">Add Project </span></a> button
-                            </div>
-          </div>
-        </div>  
-        <!-- -->
-        <div class="faq-item" v-for="project in ProjectList">
-          <div class="row">
-            <div class="col-md-9">
-              <div class="row">
-                <a data-toggle="collapse" :href="'#faq'+ project.id " class="faq-question"> {{project.Name}} </a>
-              </div>
-              <div class="row">
-                 <p>{{project.Desc}}</p> 
-              </div>
-            </div>
-            <div class="col-md-2">
-              <span class="small font-bold">Tag</span>
-              <div class="tag-list">
-                <p>
-                  <span class="tag-item">Project ID: ({{project.id}})</span>
-                  <span class="tag-item">{{project.Status}}</span>
-                </p>
-                <p>
-                  <span class="tag-item">Last Update: {{project.Modify_date | formatDate}}</span>
-                </p>
-              </div>
-            </div>
-            <div class="col-md-1">
-              <a href="#editproject" data-toggle="modal" class="btn btn-white btn-sm" @click="ProjEdit(project)"><i class="fa fa-pencil"></i> Edit </a>
-            </div>
-          </div>
-          <div class="row">
-            <task :Project="project"></task>
-            
-          </div>
-      </div>
-      <!-- -->
-    </div>
-  </div>
-  <div id="editproject" class="modal fade" >
-      <div class="modal-dialog">
-        <div class="modal-content">
-		 				<div class="modal-body">
-		 					<div class="row">
-		 						<div class="form-group">
-		 							<label>Project Name</label> <input type="string" v-model="edProj.Name" placeholder="ชื่อโครงการ"  class="form-control">
-		 							<label>Project Description</label> <textarea type="string" rows="5" v-model="edProj.Desc" placeholder="รายละเอียดโครงการ"  class="form-control" />
-		 							<label>Type</label>
-		 							<select class="form-control m-b" v-model="edProj.Type" placeholder="ประเภท" @change="Projtypechange()">
-		 								<option>Internal</option> 
-		 								<option>External</option>                                         
-		 							</select>
-		 							<label>Status</label>
-			 						<select class="form-control m-b" v-model="edProj.Status" placeholder="สถานะ" >
-			 							<option v-for="option in pstatus[ty]">{{option}}</option> 
-			 						</select>
-			 					</div>
-		 					</div>
-							<hr>
-							<div class="row">
-								<div class="col-sm-6" />
-								<div class="col-sm-3" />
-								<div class="col-sm-3">
-									<a href="#editproject" data-toggle="modal" class="btn btn-sm btn-primary pull-right m-t-n-xs" @click="Updateproj(edProj)">
-										<strong>Update</strong>
-									</a>  
-								</div>											
-							</div>
-						</div>
-					</div>
-      </div>
-  </div>
-  <div id="addproject" class="modal fade" >
-      <div class="modal-dialog">
-        <div class="modal-content">
-		 				<div class="modal-body">
-		 					<div class="row">
-		 						<div class="form-group">
-		 							<label>Project Name</label> <input type="string" v-model="addProj.Name" placeholder="ชื่อโครงการ"  class="form-control">
-		 							<label>Project Description</label> <textarea type="string" rows="5" v-model="addProj.Desc" placeholder="รายละเอียดโครงการ"  class="form-control" />
-		 							<label>Type</label>
-		 							<select class="form-control m-b" v-model="addProj.Type" placeholder="ประเภท" @change="Projtypechange()">
-		 								<option>Internal</option> 
-		 								<option>External</option>                                         
-		 							</select>
-		 							<label>Status</label>
-			 						<select class="form-control m-b" v-model="addProj.Status" placeholder="สถานะ" >
-			 							<option v-for="option in pstatus[ty]">{{option}}</option> 
-			 						</select>
-			 					</div>
-		 					</div>
-							<hr>
-							<div class="row">
-								<div class="col-sm-6" />
-								<div class="col-sm-3" />
-								<div class="col-sm-3">
-									<a href="#addproject" data-toggle="modal" class="btn btn-sm btn-primary pull-right m-t-n-xs" @click="Addproj(addProj)">
-										<strong>add Project</strong>
-									</a>  
-								</div>											
-							</div>
-						</div>
-					</div>
-      </div>
-  </div>
-</div>
-	`,
-	data: function () {
-	   return {
-		list: null,
-		ProjectList:[],
-		addProj:{Type:'External'},
-		edProj:{Type:'External'},
-		ty:0,
-		pstatus:[
-			['Open','Progress','Win','Lost','Cancel'],
-			['Open','Progress','Cancel'] 
-		]
-	   }
-	 },
-	 methods: {
-		Addproj:function(Proj){
-			//var API = window.API
-			var API_Add_proj = this.source+'/api/projects'
-			var UID = this.uid
-			Proj.modify_date = Date.now()
-			Proj.Create_date = Date.now()
-			Proj.UID = this.uid
-			if(this.edProj.Type=="External"){
-			  this.ty=0
-			}else {this.ty=1}
-			this.$http.post(API_Add_proj,Proj).then((response) => {
-		   location.reload()
-			  this.addProj= {}
-			}, (response) => {
-			  //error
-			  alert(response.body.error.message)
-			});
-		  },
-		  Updateproj:function(Proj){
-			var API = window.API
-			var API_Update_By_Proj_Id = this.source + '/api/projects/' + Proj.id
-			Proj.modify_date = Date.now()
-			this.$http.put(API_Update_By_Proj_Id,Proj).then((response) => {
-					//success
-			  //alert('Update:'+ response.body.Job_Header+'On'+response.body.modify_date)
-			  this.getProject();
-			  this.edProj= {}
-			  }, (response) => {
-			  //error
-			  alert(response.body.error.message)
-			  });
-		  },
-		  ProjEdit:function(thisProject){
-			this.edProj=thisProject
-			if(this.edProj.Type=="External"){
-			  this.ty=0
-			}else {this.ty=1}
-		  },
-		  Projtypechange: function(){
-			if(this.edProj.Type=="External"){
-			  this.ty=0
-			}else {this.ty=1}
-		  },
-		  getProject : function () {        
-			var API = window.API
-			var UID = this.uid
-			var API_Project_by_UID = this.source + '/api/projects' + '?filter[where][UID]='+UID+'&filter[order]=id%20DESC'
-			this.$http.get(API_Project_by_UID).then((response) => {
-			  //success
-			  this.ProjectList = response.body
-			}, (response) => {
-			  //error
-			  alert(response.body.error.message)
-			});
-			 
-		  }
-	  },
-	  created: function () {
-		  this.getProject();
-	  },
-	  mounted: function () {
-		
-	  }
-   })
-
 /*====================================================================================================*/
 Vue.component('calendar', { 
 	props: ['source','title','events','accountname','uid'],
@@ -597,6 +297,8 @@ Vue.component('calendar', {
 		   this.getProject();
 	   }
    })
+ 
+
 /*====================================================================================================*/
 Vue.component('date-cal', { 
 	props: ['st','ed'],
@@ -611,16 +313,16 @@ Vue.component('date-cal', {
 	}
 	
 });
-/*====================================================================================================*/
+
 Vue.component('date-span', { 
 	 props: ['date'],
 	 template: '<span> {{date | formatDate}} </span>'
 });
-/*====================================================================================================*/
 Vue.component('time-span', { 
 	props: ['date'],
 	template: '<span> {{date | formattime}} </span>'
 });
+
 /*====================================================================================================*/ 
 	Vue.component('timesheet',{
 		props: ['title','accountname','source','uid'],
@@ -1021,6 +723,151 @@ Vue.component('time-span', {
 	    }
 	});	
 /*====================================================================================================*/
+Vue.component('add', { 
+	props: ['id','subject','body','st','ed','source'],
+	template: `	<div>
+				<a type="button" class="btn btn-info " :href="'#'+xhref" data-toggle="modal" @click="clickNewTask()">
+					<i class="fa fa-paste"></i>	New Task 
+				</a>
+				<div :id="xhref" class="modal fade" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="row">
+								<center> 
+										<p>Add New Task</p>
+									</center>
+									<hr>
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label>Job Name</label> 
+											<input type="text" v-model="newTask.Job_Header" placeholder="ชื่องาน" class="form-control">
+											<label>Job Detail</label> 
+											<textarea type="text" v-model="newTask.Job_detail" placeholder="รายละเอียด" class="form-control" rows="4"></textarea>
+											<label>Job Group</label>
+											<select class="form-control m-b" v-model="newTask.Job_Type" @change="changeType()">
+													<option v-for="option in adJobType" :value="option.Name"> {{option.Name}}</option>
+											</select>
+											<label>Job SOW</label>
+											<select class="form-control m-b" v-model="newTask.Job_SOW">
+													<option v-for="option in edSOW" :value="option.Name"> {{option.Name}}&nbsp;[{{option.Hours}}]</option>
+											</select>
+											<label>Project-Track</label> 	
+											<select class="form-control m-b" v-model="newTask.Projid" >
+												<option v-for="option in edProj" :value="option.id"> {{option.Name}}&nbsp;[{{option.id}}]</option>
+											</select>
+										</div>		
+									</div>
+									<div class="col-sm-6">
+										<div class="form-group">
+											
+											<label>Deadline</label>
+											<input type="date" placeholder="วันส่งงาน" class="form-control" v-model="newTask.Job_date">
+											<label>Base On Technology</label>
+											<select multiple="multiple" size="8" class="form-control" v-model="newTask.Base_Technology">
+												<option v-for= "option in adTech" :value="option.Name"> {{option.Name}} </option>
+											</select>
+											<label>Base On Brand</label>
+											<select multiple="multiple" size="6" class="form-control" v-model="newTask.Brands">
+												<option v-for= "option in adBrand" :value="option.Name"> {{option.Name}} </option>
+											</select>
+										</div>
+									</div>
+									<a class="btn btn-info pull-right" type="button"  data-toggle="modal" href="#Add-Model" @click="AddNewTask()">
+										<i class="fa fa-save"></i>
+										Add Task 
+									</a>	
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				</div>
+	`,
+	data: function () {
+	   return {
+		   xhref: "",
+		   list: null,
+		   newTask:{
+			"UID": 0,
+			"Name_Surname": "",
+			"Job_Type": "",
+			"Job_SOW": "",
+			"Job_Hours": 0,
+			"Base_Technology": [],
+			"contract": [],				
+			"remark": [],
+			"Brands": [],
+			"Projid": "",
+			"Job_Header": "",
+			"Job_detail": "",
+			"create_date": Date.now(),
+			"Job_date": Date.now(),
+			"modify_date": Date.now(),
+			"Job_progress": 100,
+			"Job_status": "Completed",
+			"Completed_date": Date.now()
+		},
+		adJobType:{},
+		adTech:{},
+		adBrand:{},
+		edSOW:[],
+		edProj:{}
+	   }
+	 },
+	 methods: {
+		clickNewTask: function(){
+			this.getadTech();
+			this.getadBrand();
+		 },
+		 getadTech : function(){
+			var API = this.source +'/api/teches'
+			this.$http.get(API).then((response) => {
+			  //success
+			  this.adTech = response.body
+			  // this.GroupName = this.Sow_lists[0].GroupName
+			  //alert(this.edSOW)
+			}, (response) => {
+				//error
+				alert(response.body.error.message)
+			});
+		  },
+		  getadBrand : function(){
+			var API = this.source +'/api/brands'
+			this.$http.get(API).then((response) => {
+			  //success
+			  this.adBrand = response.body
+			  // this.GroupName = this.Sow_lists[0].GroupName
+			  //alert(this.edSOW)
+			}, (response) => {
+				//error
+				alert(response.body.error.message)
+			});
+		  },
+		 changeType:function(){
+
+		 },
+		 AddNewTask:function(){
+
+		 }
+	   },
+	   mounted: function () {
+		  this.xhref = this.id.replace(/[^A-Z]+/g,"");
+		  this.newTask.Job_Header = this.subject;
+		  this.newTask.Job_detail = this.body;
+		  this.newTask.Job_Hours = moment(this.ed).diff(moment(this.st),'hours');
+		  this.newTask.Job_date = moment(this.ed).format("YYYY-MM-DD");
+	   }
+   })
+/*
+Vue.use(VueTables.ClientTable,{
+	compileTemplates: true,
+	datepickerOptions: {
+	  showDropdowns: true
+	}
+});	*/
+//var Vue = require('vue');
+//var VueResource = require('vue-resource');
 
 Vue.use(VueResource);
 

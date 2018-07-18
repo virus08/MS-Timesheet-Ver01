@@ -3,12 +3,10 @@ var express = require('express');
 var router = express.Router();
 var authHelper = require('../helpers/auth');
 var graph = require('@microsoft/microsoft-graph-client');
-var resClient = require('node-rest-client').Client;
- 
-//var timesheet = new resClient();
+
 
 router.get('/', async function(req, res, next) {
-  let parms = { title: 'Timesheet', active: { timesheet: true },source:'http://es-timesheet.fuangmali.info:8081' };
+  let parms = { title: 'project', active: { project: true },source:'http://es-timesheet.fuangmali.info:8081' };
 
   const accessToken = await authHelper.getAccessToken(req.cookies, res);
   const userName = req.cookies.graph_user_name;
@@ -32,7 +30,7 @@ router.get('/', async function(req, res, next) {
       parms.AccountName = result.givenName+' '+result.surname;
       parms.UID= result.id
       //parms.debug = JSON.stringify(parms,null,2);
-      res.render('timesheet', parms);
+      res.render('project', parms);
     } catch (err) {
       parms.message = 'Error retrieving messages';
       parms.error = { status: `${err.code}: ${err.message}` };
