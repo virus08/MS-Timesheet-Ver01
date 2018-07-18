@@ -33,7 +33,8 @@ router.get('/', async function(req, res, next) {
         const xresult = await client
         .api(xapi)
         //.top(10)
-        .select('subject,from,receivedDateTime,isRead')
+        .header("Prefer", "outlook.body-content-type=\"text\"")
+        .select('subject,body,from,receivedDateTime,isRead')
         .orderby('receivedDateTime DESC')
         .get();
   

@@ -26,34 +26,19 @@ router.get('/', async function(req, res, next) {
     start.setDate(1);
     // Set end of the calendar view to 7 days from start
     const end = new Date(new Date(start).setDate(start.getDate() + 31));
-    try {
-      // Get the 10 newest messages from inbox
-      const result = await client
-      .api('/me/')
-      .get();
-      parms.source = 'http://es-timesheet.fuangmali.info:8081'
-      parms.AccountName = result.givenName+' '+result.surname;
-      parms.UID= result.id
-      //parms.debug = JSON.stringify(parms,null,2);
-      //res.render('timesheet', parms);
-      } catch (err) {
-        parms.message = 'Error retrieving messages';
-        parms.error = { status: `${err.code}: ${err.message}` };
-        parms.debug = JSON.stringify(err.body, null, 2);
-        res.render('error', parms);
-    }
+    
     try {
       // Get the first 10 events for the coming week
       const result = await client
       .api(`/me/calendarView?startDateTime=${start.toISOString()}&endDateTime=${end.toISOString()}`)
       .header("Prefer", "outlook.body-content-type=\"text\"")
       .top(10)
-      .select('id,subject,body,start,end')
+      .select('subject,body,start,end')
       .orderby('start/dateTime ASC')
       .get();
 
-      parms.events = JSON.stringify(result.value, null, 2);
-      parms.debug = JSON.stringify(parms, null, 2);
+      parms.events = result.value;
+
       res.render('calendar', parms);
     } catch (err) {
       parms.message = 'Error retrieving events';

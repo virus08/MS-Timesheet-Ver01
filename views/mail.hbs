@@ -22,7 +22,9 @@
           <tr>
             <th>From</th>
             <th>Subject</th>
-            <th>Received</th>
+            <th>Body</th>
+            <th class="text-xs-right" >Received</th>
+            <th class="text-xs-right" >Action</th>
           </tr>
         </thead>
         <tbody>
@@ -30,7 +32,13 @@
             <tr class="{{#unless this.isRead}}unread{{/unless}}">
               <td title="{{this.from.emailAddress.address}}">{{this.from.emailAddress.name}}</td>
               <td>{{this.subject}}</td>
-              <td>{{this.receivedDateTime}}</td>
+              <td>{{this.body.content}}</td>
+              <td  class="text-xs-right" ><date-span date ="{{this.receivedDateTime}}"></date-span></td>
+              <td class="text-xs-right">
+                <a type="button" class="btn btn-info " href="#Add-Model" data-toggle="modal" @click="clickNewTask()">
+								  <i class="fa fa-paste"></i>	New Task 
+						  	</a>
+              </td>
             </tr>
           {{/each}}
         </tbody>
