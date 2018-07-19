@@ -47,7 +47,7 @@ router.get('/', async function(req, res, next) {
       const result = await client
       .api(`/me/calendarView?startDateTime=${start.toISOString()}&endDateTime=${end.toISOString()}`)
       .header("Prefer", "outlook.body-content-type=\"text\"")
-      .top(10)
+      //.top(10)
       .select('id,subject,body,start,end')
       .orderby('start/dateTime ASC')
       .get();
