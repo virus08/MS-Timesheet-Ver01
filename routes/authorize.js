@@ -31,7 +31,7 @@ router.get('/signout', function(req, res, next) {
   authHelper.clearCookies(res);
 
   // Redirect to home
-  res.redirect('/');
+  res.redirect('http://client.fuangmali.info:8080');
 });
 
 module.exports = router;
