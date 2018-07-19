@@ -19,7 +19,7 @@ router.get('/', async function(req, res, next) {
     }
 
     // Redirect to home
-    res.redirect('/');
+    res.redirect('http://client.fuangmali.info:8080');
   } else {
     // Otherwise complain
     res.render('error', { title: 'Error', message: 'Authorization error', error: { status: 'Missing code parameter' } });
