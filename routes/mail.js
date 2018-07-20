@@ -6,7 +6,7 @@ var graph = require('@microsoft/microsoft-graph-client');
 
 /* GET /mail */
 router.get('/', async function(req, res, next) {
-  let parms = { title: 'TASK', active: { inbox: true } };
+  let parms = { title: 'Mail', active: { inbox: true } };
 
   const accessToken = await authHelper.getAccessToken(req.cookies, res);
   const userName = req.cookies.graph_user_name;
@@ -21,12 +21,29 @@ router.get('/', async function(req, res, next) {
       }
     });
     try {
+      // Get the 10 newest messages from inbox
+      const result = await client
+      .api('/me/')
+      .get();
+      parms.source = 'http://es-timesheet.fuangmali.info:8081'
+      parms.AccountName = result.givenName+' '+result.surname;
+      parms.UID= result.id
+      //parms.debug = JSON.stringify(parms,null,2);
+      //res.render('timesheet', parms);
+      } catch (err) {
+        parms.message = 'Error retrieving messages';
+        parms.error = { status: `${err.code}: ${err.message}` };
+        parms.debug = JSON.stringify(err.body, null, 2);
+        res.render('error', parms);
+    }
+    try {
       const result = await client
       .api('/me/mailfolders')
       .filter("startswith(displayName, 'TASK')")
       .select('id,displayName')
       .get();
       const xapi ="/me/mailfolders('"+result.value[0].id+"')/messages";
+      
       //parms.debug = xapi;
       try {
         // Get the 10 newest messages from inbox
@@ -38,8 +55,9 @@ router.get('/', async function(req, res, next) {
         .orderby('receivedDateTime DESC')
         .get();
   
-        parms.messages = xresult.value;
-        //parms.debug = JSON.stringify(xresult.value, null, 2);
+        //parms.messages = xresult.value;
+        parms.messages=JSON.stringify(xresult.value, null, 2);
+        parms.debug = JSON.stringify(parms, null, 2);
         res.render('mail', parms);
       } catch (err) {
         parms.message = 'Error retrieving messages';

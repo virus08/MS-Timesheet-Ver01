@@ -11,7 +11,7 @@ require('dotenv').config();
 
 var index = require('./routes/index');
 var authorize = require('./routes/authorize');
-//var mail = require('./routes/mail');
+var mail = require('./routes/mail');
 var calendar = require('./routes/calendar');
 // var contacts = require('./routes/contacts');
 var timesheet = require('./routes/timesheet');
@@ -36,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/authorize', authorize);
-//app.use('/mail', mail);
+app.use('/mail', mail);
 app.use('/calendar', calendar);
 //app.use('/contacts', contacts);
 app.use('/timesheet', timesheet);

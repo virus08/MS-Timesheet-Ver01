@@ -1,50 +1,7 @@
-<div class="row wrapper wrapper-content animated fadeInRight">
-    <div class="ibox float-e-margins">
-      <div class="ibox-title">
-        <h5>{{title}}</h5>
-        <div class="ibox-tools">
-          <a class="collapse-link">
-            <i class="fa fa-chevron-up"></i>
-          </a>
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            <i class="fa fa-wrench"></i>
-          </a>
-          <ul class="dropdown-menu dropdown-user">
-            <li><a href="#">Config option 1</a></li>
-            <li><a href="#">Config option 2</a></li>
-          </ul>
-          <a class="close-link"><i class="fa fa-times"></i></a>
-        </div>
-      </div>
-    <div class="ibox-content">
-      <table class="table table-striped table-bordered table-hover dataTables-example" >
-        <thead>
-          <tr>
-            <th>From</th>
-            <th>Subject</th>
-            <th>Body</th>
-            <th class="text-xs-right" >Received</th>
-            <th class="text-xs-right" >Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each messages}}
-            <tr class="{{#unless this.isRead}}unread{{/unless}}">
-              <td title="{{this.from.emailAddress.address}}">{{this.from.emailAddress.name}}</td>
-              <td>{{this.subject}}</td>
-              <td>{{this.body.content}}</td>
-              <td  class="text-xs-right" ><date-span date ="{{this.receivedDateTime}}"></date-span></td>
-              <td class="text-xs-right">
-                <a type="button" class="btn btn-info " href="#Add-Model" data-toggle="modal" @click="clickNewTask()">
-								  <i class="fa fa-paste"></i>	New Task 
-						  	</a>
-              </td>
-            </tr>
-          {{/each}}
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
- 
+<mail 
+title = "{{title}}"
+messages="{{messages}}"
+source="{{source}}"
+accountname = "{{AccountName}}"
+uid = "{{UID}}"
+/>
