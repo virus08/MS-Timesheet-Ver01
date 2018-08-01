@@ -19,6 +19,14 @@ Vue.filter('formatDate', function(value) {
 		return moment(String(value)).format('D MMMM YY')
 	}
 })
+Vue.filter('formatDateTz', function(value) {
+	if (value) {
+		var mydate=moment.tz(value,'UTC');
+		return mydate.clone().tz('Asia/Bangkok').format('D MMMM YY h:mm a')
+	}
+})
+
+
 Vue.filter('formattime', function(value) {
 	if (value) {
 		return moment(String(value)).format(' D MMMM YY h:mm a')
@@ -374,8 +382,8 @@ Vue.component('calendar', {
 						<template slot="items" slot-scope="props">
 							<td>{{ props.item.subject }}</td>
 							<td class="text-xs-left">{{ props.item.body.content.substring(0, 60) }}</td>
-							<td class="text-xs-right">{{ props.item.start.dateTime | formattime}}</td>
-							<td class="text-xs-right">{{ props.item.end.dateTime | formattime }}</td>
+							<td class="text-xs-right">{{ props.item.start.dateTime | formatDateTz}}</td>
+							<td class="text-xs-right">{{ props.item.end.dateTime | formatDateTz }}</td>
 							<td class="text-xs-right"><date-cal :st="props.item.start.dateTime" :ed = "props.item.end.dateTime"></date-cal></td>
 							<td class="text-xs-right">
 							<a type="button" href="#Add-Model" data-toggle="modal" class="btn btn-info " @click="add(props.item)">
@@ -400,7 +408,7 @@ Vue.component('calendar', {
 								<div class="row">
 									<center> 
 										<p>Add New Task ({{newTask.Job_Hours}}) Hours</p>
-										{{UID}}
+										
 									</center>
 									<hr>
 									<div class="col-sm-6">
@@ -927,7 +935,20 @@ Vue.component('time-span', {
 			var API_AddNewTask = API
 			this.newTask.Name_Surname = this.accountname;
 			this.newTask.UID = this.uid;
+			this.newTask.create_date = Date.now();
+			this.newTask.Completed_date = Date.now();
+			this.newTask.Job_progress = 100;
+			this.newTask.Job_status = "Completed";
+			this.newTask.modify_date= Date.now();
+			
 			//myTimesheet.modify_date = Date.now()
+			/*
+			"create_date": Date.now(),
+				"Job_date": Date.now(),
+				"modify_date": Date.now(),
+				"Job_progress": 100,
+				"Job_status": "Completed",
+				"Completed_date": Date.now()*/
 			this.newTask.Job_Hours = this.edSOW.filter(list => list.Name == this.newTask.Job_SOW )[0].Hours
 			this.$http.post(API_AddNewTask,this.newTask).then((response) => {
 				  //success

@@ -20,7 +20,7 @@ router.get('/', async function(req, res, next) {
         done(null, accessToken);
       }
     });
-
+	//client.DefaultRequestHeaders.Add("Prefer","outlook.timezone=\"SE Asia Standard Time\"");
     // Set start of the calendar view to today at midnight
     const start = new Date(new Date().setHours(0,0,0));
     start.setDate(1);
@@ -30,6 +30,7 @@ router.get('/', async function(req, res, next) {
       // Get the 10 newest messages from inbox
       const result = await client
       .api('/me/')
+	  .headers({"Prefer":"outlook.timezone=\"SE Asia Standard Time\""})
       .get();
       parms.source = 'http://es-timesheet.fuangmali.info:8081'
       parms.AccountName = result.givenName+' '+result.surname;
@@ -46,8 +47,10 @@ router.get('/', async function(req, res, next) {
       // Get the first 10 events for the coming week
       const result = await client
       .api(`/me/calendarView?startDateTime=${start.toISOString()}&endDateTime=${end.toISOString()}`)
-      .header("Prefer", "outlook.body-content-type=\"text\"")
-	  .header("Prefer", "outlook.timezone=\"SE Asia Standard Time\"")
+      //.header("Prefer","outlook.body-content-type=\"text\"")
+	  //.headers({"Prefer":"outlook.body-content-type=\"text\""},{"Prefer":"outlook.timezone=\"SE Asia Standard Time\""})
+	  .headers({"Prefer":"outlook.body-content-type=\"text\""})
+	  
       .top(100)
       .select('id,subject,body,start,end')
       .orderby('start/dateTime ASC')
