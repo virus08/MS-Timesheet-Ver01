@@ -47,6 +47,7 @@ router.get('/', async function(req, res, next) {
       const result = await client
       .api(`/me/calendarView?startDateTime=${start.toISOString()}&endDateTime=${end.toISOString()}`)
       .header("Prefer", "outlook.body-content-type=\"text\"")
+	  .header("Prefer", "outlook.timezone=\"SE Asia Standard Time\"")
       .top(100)
       .select('id,subject,body,start,end')
       .orderby('start/dateTime ASC')
