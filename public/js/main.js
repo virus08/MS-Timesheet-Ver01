@@ -870,7 +870,7 @@ Vue.component('time-span', {
 			const reqapi = this.source + '/api/timesheets'
 			var api = reqapi + '?filter[where][Name_Surname]='+ this.accountname
 			var api = api + '&filter[where][create_date][gt]=2018-01&filter[where][Job_date][gt]=2018-01'
-			var api = api + '&filter[order]=id%20DESC&filter[limit]=30'
+			var api = api + '&filter[order]=id%20DESC&filter[limit]=100'
 			this.$http.get(api).then(response => {
 				this.list = response.body;
 			}, response => {
