@@ -954,7 +954,9 @@ Vue.component('time-span', {
 				  //success
 				// alert('Add:'+ response.body.Job_Header+'On'+response.body.modify_date)
 				this.gettimesheet();
-				this.newTask= {}
+				//this.newTask= {}
+				this.newTask.Job_Header='';
+				this.newTask.Job_detail='';
 				}, (response) => {
 				//error
 				alert(response.body.error.message)
