@@ -495,7 +495,7 @@ Vue.component('mail', {
 		getProject : function () {
 
 			var API = this.source + '/api/projects'
-
+			console.log(API)
 			//var UID = '1'
 
 			var API_PROJECT_By_accountname = API + '?filter[where][accountname]='+this.accountname
