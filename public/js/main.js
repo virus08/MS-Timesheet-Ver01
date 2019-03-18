@@ -804,6 +804,7 @@ Vue.component('project', {
 			Proj.Create_date = Date.now()
 			Proj.UID = this.uid
 			Proj.accountname = this.accountname
+			console.log(Proj.accountname)
 			if(this.edProj.Type=="External"){
 			  this.ty=0
 			}else {this.ty=1}
