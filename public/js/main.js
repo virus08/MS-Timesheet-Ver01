@@ -1091,10 +1091,10 @@ Vue.component('calendar', {
 			var API = this.source + '/api/projects'
 			
 			//var UID = '1'
-			// var API_PROJECT_By_accountname = API + '?filter[where][accountname]='+this.accountname
+			var API_PROJECT_By_accountname = API + '?filter[where][accountname]='+this.accountname
 			//console.log(API_PROJECT_By_accountname)
-			var API_Project_by_UID = this.source + '/api/projects' + '?filter[where][UID]='+UID+'&filter[order]=id%20DESC'
-			this.$http.get(API_Project_by_UID).then((response) => {
+			console.log(this.uid)
+			this.$http.get(API_PROJECT_By_accountname).then((response) => {
 			  //success
 			  this.edProj = response.body
 			  // this.GroupName = this.Sow_lists[0].GroupName
