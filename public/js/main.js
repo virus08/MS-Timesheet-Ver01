@@ -1495,7 +1495,7 @@ Vue.component('time-span', {
 		  getProject : function () {
 			var API = this.source + '/api/projects'
 			//var UID = '1'
-			var API_PROJECT_By_accountname = API + '?filter[where][accountname]='+this.accountname
+			var API_PROJECT_By_accountname = API + '?filter[where][UID]='+this.uid
 			this.$http.get(API_PROJECT_By_accountname).then((response) => {
 			  //success
 			  this.edProj = response.body
