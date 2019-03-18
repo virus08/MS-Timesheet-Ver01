@@ -614,7 +614,8 @@ Vue.component('task', {
 	 },
 	 methods: {
 		removeproj:function(projid){
-			var API = 'http://'
+			var API = window.API
+					
 					var API_Remove_By_Proj_Id = API.PROJECT + '/' + projid
 					//Proj.modify_date = Date.now()
 					this.$http.delete(API_Remove_By_Proj_Id).then((response) => {
