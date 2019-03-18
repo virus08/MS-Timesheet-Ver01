@@ -1094,7 +1094,8 @@ Vue.component('calendar', {
 			var API_PROJECT_By_accountname = API + '?filter[where][accountname]='+this.accountname
 			//console.log(API_PROJECT_By_accountname)
 			console.log(this.uid)
-			this.$http.get(API_PROJECT_By_accountname).then((response) => {
+			var API_PROJECT_By_UID = API + '?filter[where][accountname]='+this.uid
+			this.$http.get(API_PROJECT_By_UID).then((response) => {
 			  //success
 			  this.edProj = response.body
 			  // this.GroupName = this.Sow_lists[0].GroupName
