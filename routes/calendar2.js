@@ -56,7 +56,7 @@ router.get('/', async function(req, res, next) {
 	  //.headers({"Prefer":"outlook.body-content-type=\"text\""},{"Prefer":"outlook.timezone=\"SE Asia Standard Time\""})
 	  .headers({"Prefer":"outlook.body-content-type=\"text\""})
 	  
-      .top(100)
+      // .top(100)
       .select('id,subject,body,start,end')
       .orderby('start/dateTime ASC')
       .get();
