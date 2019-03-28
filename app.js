@@ -39,7 +39,7 @@ app.use('/', index);
 app.use('/authorize', authorize);
 app.use('/mail', mail);
 app.use('/calendar', calendar);
-app.use('/calendar2', calendar);
+app.use('/calendar2', calendar2);
 //app.use('/contacts', contacts);
 app.use('/timesheet', timesheet);
 app.use('/project', project);
