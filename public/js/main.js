@@ -862,9 +862,279 @@ Vue.component('project', {
 		
 	  }
    })
-
 /*====================================================================================================*/
 Vue.component('calendar', { 
+	props: ['source','title','events','accountname','uid'],
+	template: `
+	<div class="row">
+	<div class="col-lg-12">
+		<div class="ibox float-e-margins">
+			<div class="ibox-title">
+				<h5>{{title}} </h5>
+				<div class="ibox-tools">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+						<i class="fa fa-wrench"></i> Option
+					</a>
+					<ul class="dropdown-menu dropdown-user">
+						<li><a href="#">ยังไม่ได้ทำรอก่อนนะ</a></li>
+					</ul>
+				</div>
+			</div>
+			<v-app class="ibox-content">
+				<v-card>
+					<v-card-title>
+						{{title}} Table
+						<v-spacer></v-spacer>
+						<v-text-field
+						v-model="search"
+						append-icon="search"
+						label="Search"
+						single-line
+						hide-details
+						></v-text-field>
+					</v-card-title>
+
+					<v-data-table
+						:headers="headers"
+						:items="list"
+						:search="search"
+						disable-initial-sort
+						class="table table-striped"
+						>
+						
+						<template slot="items" slot-scope="props">
+							<td>{{ props.item.subject }}</td>
+							<td class="text-xs-left">{{ props.item.body.content.substring(0, 60) }}</td>
+							<td class="text-xs-right">{{ props.item.start.dateTime | formatDateTz}}</td>
+							<td class="text-xs-right">{{ props.item.end.dateTime | formatDateTz }}</td>
+							<td class="text-xs-right"><date-cal :st="props.item.start.dateTime" :ed = "props.item.end.dateTime"></date-cal></td>
+							<td class="text-xs-right">
+							<a type="button" href="#Add-Model" data-toggle="modal" class="btn btn-info " @click="add(props.item)">
+								<i class="fa fa-pencil-square-o"></i> Add 
+							</a>
+							</td>
+						</template>
+						<v-alert slot="no-results" :value="true" color="error" icon="warning">
+							Your search for "{{ search }}" found no results.
+						</v-alert>
+					</v-data-table>
+				</v-card>       
+			</v-app>
+		</div>
+		
+	</div>
+	<!-- ---------------------------------Add Model-------------------------------------------- -->
+			<div id="Add-Model" class="modal fade" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="row">
+									<center> 
+										<p>Add New Task ({{newTask.Job_Hours}}) Hours</p>
+										
+									</center>
+									<hr>
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label>Job Name</label> 
+											<input type="text" v-model="newTask.Job_Header" placeholder="ชื่องาน" class="form-control">
+											<label>Job Detail</label> 
+											<textarea type="text" v-model="newTask.Job_detail" placeholder="รายละเอียด" class="form-control" rows="4"></textarea>
+											<label>Job Group</label>
+											<select class="form-control m-b" v-model="newTask.Job_Type" @change="changeType()">
+													<option v-for="option in adJobType" :value="option.Name"> {{option.Name}}</option>
+											</select>
+											<label>Job SOW</label>
+											<select class="form-control m-b" v-model="newTask.Job_SOW">
+													<option v-for="option in edSOW" :value="option.Name"> {{option.Name}}</option>
+											</select>
+											<label>Project-Track</label> 	
+											<select class="form-control m-b" v-model="newTask.Projid" >
+												<option v-for="option in edProj" :value="option.id"> {{option.Name}}&nbsp;[{{option.id}}]</option>
+											</select>
+										</div>		
+									</div>
+									<div class="col-sm-6">
+										<div class="form-group">
+											
+											<label>Deadline</label>
+											<input type="date" placeholder="วันส่งงาน" class="form-control" v-model="newTask.Job_date">
+											<label>Base On Technology</label>
+											<select multiple="multiple" size="8" class="form-control" v-model="newTask.Base_Technology">
+												<option v-for= "option in adTech" :value="option.Name"> {{option.Name}} </option>
+											</select>
+											<label>Base On Brand</label>
+											<select multiple="multiple" size="6" class="form-control" v-model="newTask.Brands">
+												<option v-for= "option in adBrand" :value="option.Name"> {{option.Name}} </option>
+											</select>
+										</div>
+									</div>
+								</div>
+							<div>
+							<hr>
+								<a class="btn btn-info pull-right" type="button"  data-toggle="modal" href="#Add-Model" @click="AddNewTask()">
+									<i class="fa fa-save"></i>
+									Add Task 
+								</a>
+								<br>
+							</div>         
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- ----------------------------------End Add Model----------------------------------- -->
+	</div>
+</div>
+	`,
+	data: function () {
+	   return {
+		   list: [],
+		   search: '',
+		   headers: [
+			   { text: 'Subject',sortable: true,class: 'col-md-4',value:'subject'},
+			   { text: 'Body', class: 'col-md-4', sortable: false,value:'body'},
+			   { text: 'Start', align: 'right',class: 'col-md-2',sortable: false,value:'st'},
+			   { text: 'End', align: 'right', class: 'col-md-2',sortable: false,value:'ed'},
+			   { text: 'Hours', align: 'right', sortable: true,value:'h'},
+			   { text: 'Action', align: 'center', sortable: false,value:'action'}
+			 ],
+		  //
+			newTask:{
+				"UID": 0,
+				"Name_Surname": "",
+				"Job_Type": "",
+				"Job_SOW": "",
+				"Job_Hours": 0,
+				"Base_Technology": [],
+				"contract": [],				
+				"remark": [],
+				"Brands": [],
+				"Projid": "",
+				"Job_Header": "",
+				"Job_detail": "",
+				"create_date": Date.now(),
+				"Job_date": Date.now(),
+				"modify_date": Date.now(),
+				"Job_progress": 100,
+				"Job_status": "Completed",
+				"Completed_date": Date.now()
+			},
+			adJobType:{},
+			adTech:{},
+			adBrand:{},
+			edSOW:{},
+			edProj:{}
+	//
+	   }
+	 },
+	 methods: {
+		 add: function(item){
+			 this.newTask.Job_Header = item.subject
+			 this.newTask.Job_detail = item.body.content
+			 this.newTask.Job_Hours = moment(item.end.dateTime).diff(moment(item.start.dateTime),'hours');
+			 this.newTask.Job_date = moment(item.end.dateTime).format("YYYY-MM-DD");
+			 
+			 /*
+			   this.$http.get(this.source).then(function(response){
+				   this.list = response.data;
+			   }, function(error){
+				   console.log(error.statusText);
+			   });*/
+		   },
+	     getadJobType : function(){
+		   var API = this.source +'/api/jobtypes'
+		   this.$http.get(API).then((response) => {
+			 //success
+			 this.adJobType = response.body
+			 // this.GroupName = this.Sow_lists[0].GroupName
+			 //alert(this.edSOW)
+		   }, (response) => {
+			   //error
+			   alert(response.body.error.message)
+		   });
+	     },
+	     getadTech : function(){
+		 	var API = this.source +'/api/teches'
+		 	this.$http.get(API).then((response) => {
+		  	 //success
+		   	this.adTech = response.body
+			// this.GroupName = this.Sow_lists[0].GroupName
+			//alert(this.edSOW)
+			}, (response) => {
+			 //error
+			 alert(response.body.error.message)
+		 });
+	     },
+	     getadBand : function(){
+		 	var API = this.source +'/api/brands'
+		 	this.$http.get(API).then((response) => {
+		   		//success
+		  		this.adBrand = response.body
+		   		// this.GroupName = this.Sow_lists[0].GroupName
+		   		//alert(this.edSOW)
+		 	}, (response) => {
+			 //error
+			 alert(response.body.error.message)
+		 });
+		},
+		changeType : function(){
+			var API = this.source + '/api/sows'
+			var API_SOW_By_GroupName = API+ '?filter[where][GroupName]='+ this.newTask.Job_Type
+			this.$http.get(API_SOW_By_GroupName).then(response => {
+				this.edSOW = response.body;
+				}, response => {
+					aletr(response)
+				});
+		},
+		getProject : function () {
+			var API = this.source + '/api/projects'
+			
+			//var UID = '1'
+			//var API_PROJECT_By_accountname = API + '?filter[where][accountname]='+this.accountname
+			//console.log(API_PROJECT_By_accountname)
+			console.log(this.uid)
+			var API_PROJECT_By_UID = API + '?filter[where][UID]='+this.uid
+			this.$http.get(API_PROJECT_By_UID).then((response) => {
+			  //success
+			  this.edProj = response.body
+			  // this.GroupName = this.Sow_lists[0].GroupName
+			  //alert(this.edSOW)
+			}, (response) => {
+				//error
+				alert(response.body.error.message)
+			});
+		  },
+		  AddNewTask : function (myTimesheet){
+			var API = this.source + '/api/timesheets'
+			var API_AddNewTask = API
+			//this.newTask.Name_Surname = this.accountname;
+			//this.newTask.UID = this.uid;
+			//myTimesheet.modify_date = Date.now()
+			//this.newTask.Job_Hours = this.edSOW.filter(list => list.Name == this.newTask.Job_SOW )[0].Hours
+			this.$http.post(API_AddNewTask,this.newTask).then((response) => {
+				  //success
+				// alert('Add:'+ response.body.Job_Header+'On'+response.body.modify_date)
+				this.gettimesheet();
+				this.newTask= {}
+				}, (response) => {
+				//error
+				alert(response.body.error.message)
+				});
+			}
+	   },
+	   mounted: function () {
+		   this.list=JSON.parse(this.events)
+		   this.newTask.Name_Surname= this.accountname;
+		   this.newTask.UID= this.uid
+		   this.getadJobType();
+		   this.getadTech();
+		   this.getadBand();
+		   this.getProject();
+	   }
+   })
+
+/*====================================================================================================*/
+Vue.component('calendar2', { 
 	props: ['source','title','events','accountname','uid'],
 	template: `
 	<div class="row">
