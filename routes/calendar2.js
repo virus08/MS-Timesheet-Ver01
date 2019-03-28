@@ -30,7 +30,7 @@ router.get('/', async function(req, res, next) {
     // Set end of the calendar view to 7 days from start
     const thisdate = new Date(new Date().setHours(0,0,0));
     thisdate.setDate(1);
-    const end = new Date(new Date(start).setDate(thisdate.getDate() + 31));
+    const end = new Date(new Date(thisdate).setDate(thisdate.getDate() + 31));
     try {
       // Get the 10 newest messages from inbox
       const result = await client
