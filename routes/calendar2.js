@@ -24,7 +24,7 @@ router.get('/', async function(req, res, next) {
     // Set start of the calendar view to today at midnight
     // const start = new Date(new Date().setHours(0,0,0));
     // 2018, 10, 1, 0, 0, 0, 0
-    const start = new Date(new Date(2019, 1, 1, 0, 0, 0, 0).setHours(0,0,0));
+    const start = new Date(new Date(2018, 12, 1, 0, 0, 0, 0).setHours(0,0,0));
     start.setDate(1);
     // Set end of the calendar view to 7 days from start
     const end = new Date(new Date(start).setDate(start.getDate() + 31));
