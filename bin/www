@@ -5,7 +5,7 @@
  */
 
 // var fs = require('fs');
-// var app = require('../app');
+var app = require('../app');
 var debug = require('debug')('node-tutorial:server');
 var http = require('http');
 // var https = require('https');
