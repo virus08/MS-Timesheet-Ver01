@@ -1,4 +1,4 @@
-const apiroot =  'http://es-timesheet.fuangmali.info:8081/api'
+const apiroot =  'https://es-timesheet.azurewebsites.net/api'
 // http://localhost:8080/api/users/login
 
 window.API = {

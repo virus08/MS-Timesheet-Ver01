@@ -8,7 +8,7 @@ var graph = require('@microsoft/microsoft-graph-client');
 //var timesheet = new resClient();
 
 router.get('/', async function(req, res, next) {
-  let parms = { title: 'Timesheet', active: { timesheet: true },source:'http://es-timesheet.fuangmali.info:8081' };
+  let parms = { title: 'Timesheet', active: { timesheet: true },source:'https://es-timesheet.azurewebsites.net' };
 
   const accessToken = await authHelper.getAccessToken(req.cookies, res);
   const userName = req.cookies.graph_user_name;

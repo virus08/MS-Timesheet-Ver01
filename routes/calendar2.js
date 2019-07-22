@@ -37,7 +37,7 @@ router.get('/', async function(req, res, next) {
       .api('/me/')
 	  .headers({"Prefer":"outlook.timezone=\"SE Asia Standard Time\""})
       .get();
-      parms.source = 'http://es-timesheet.fuangmali.info:8081'
+      parms.source = 'https://es-timesheet.azurewebsites.net'
       parms.AccountName = result.givenName+' '+result.surname;
       parms.UID= result.id
       //parms.debug = JSON.stringify(parms,null,2);
