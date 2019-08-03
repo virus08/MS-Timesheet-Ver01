@@ -496,7 +496,7 @@ Vue.component('mail', {
 		getProject : function () {
 
 			var API = this.source + '/api/projects'
-			console.log(API)
+			// console.log(API)
 			//var UID = '1'
 
 			var API_PROJECT_By_accountname = API + '?filter[where][UID]='+this.uid
@@ -1644,26 +1644,6 @@ Vue.component('time-span', {
 				"Job_status": "Completed",
 				"Completed_date": Date.now()
 			},
-			default:{
-				"UID": 0,
-				"Name_Surname": "",
-				"Job_Type": "",
-				"Job_SOW": "",
-				"Job_Hours": 0,
-				"Base_Technology": [],
-				"contract": [],				
-				"remark": [],
-				"Brands": [],
-				"Projid": "",
-				"Job_Header": "",
-				"Job_detail": "",
-				"create_date": Date.now(),
-				"Job_date": Date.now(),
-				"modify_date": Date.now(),
-				"Job_progress": 100,
-				"Job_status": "Completed",
-				"Completed_date": Date.now()
-			},
 			adJobType:{},
 			adTech:{},
 			adBrand:{},
@@ -1701,8 +1681,16 @@ Vue.component('time-span', {
 			this.getProject();
 			this.getadJobType();
 			this.getadTech();
-			this.getadBand();
+            this.getadBand();
+            // this.newTask = this.default;
 			this.newTask.Job_date= moment().format("YYYY-MM-DD")
+			this.newTask.Name_Surname = this.accountname;
+			this.newTask.UID = this.uid;
+			this.newTask.create_date = Date.now();
+			this.newTask.Completed_date = Date.now();
+			this.newTask.Job_progress = 100;
+			this.newTask.Job_status = "Completed";
+			this.newTask.modify_date= Date.now();
 		  },
 		  getadJobType : function(){
 			  var API = this.source +'/api/jobtypes'
@@ -1771,20 +1759,19 @@ Vue.component('time-span', {
 			this.newTask.Job_Hours = this.edSOW.filter(list => list.Name == this.newTask.Job_SOW )[0].Hours
 			this.$http.post(API_AddNewTask,this.newTask).then((response) => {
 				  //success
-				// alert('Add:'+ response.body.Job_Header+'On'+response.body.modify_date)
+                // alert('Add:'+ response.body.Job_Header+'On'+response.body.modify_date)
+                //this.newTask = this.default;
 				this.gettimesheet();
 				//this.newTask= {}
-				this.newTask = this.default;
-				this.newTask.Name_Surname = this.accountname;
-				this.newTask.UID = this.uid;
-				this.newTask.create_date = Date.now();
-				this.newTask.Completed_date = Date.now();
-				this.newTask.Job_progress = 100;
-				this.newTask.Job_status = "Completed";
-				this.newTask.modify_date= Date.now();
-				// this.newTask.Job_Header='';
-				// this.newTask.Job_detail='';
-
+				this.newTask.Job_Header='';
+                this.newTask.Job_detail='';
+                this.newTask.Job_Type='';
+                this.newTask.Job_SOW='';
+                this.newTask.Job_Hours=0;
+                this.newTask.Base_Technology=[];
+                this.newTask.Brands=[];
+                this.newTask.Projid='';
+                // 
 				}, (response) => {
 				//error
 				alert(response.body.error.message)
