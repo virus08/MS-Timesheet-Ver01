@@ -28,7 +28,8 @@ router.get('/', async function(req, res, next) {
 
     parms.user = userName;
     parms.source = 'https://es-timesheet.azurewebsites.net'
-
+    parms.AccountName = result.givenName+' '+result.surname;
+    parms.UID= result.id
 
     // Initialize Graph client
 
