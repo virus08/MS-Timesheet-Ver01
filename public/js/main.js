@@ -1644,6 +1644,26 @@ Vue.component('time-span', {
 				"Job_status": "Completed",
 				"Completed_date": Date.now()
 			},
+			default:{
+				"UID": 0,
+				"Name_Surname": "",
+				"Job_Type": "",
+				"Job_SOW": "",
+				"Job_Hours": 0,
+				"Base_Technology": [],
+				"contract": [],				
+				"remark": [],
+				"Brands": [],
+				"Projid": "",
+				"Job_Header": "",
+				"Job_detail": "",
+				"create_date": Date.now(),
+				"Job_date": Date.now(),
+				"modify_date": Date.now(),
+				"Job_progress": 100,
+				"Job_status": "Completed",
+				"Completed_date": Date.now()
+			},
 			adJobType:{},
 			adTech:{},
 			adBrand:{},
@@ -1754,8 +1774,17 @@ Vue.component('time-span', {
 				// alert('Add:'+ response.body.Job_Header+'On'+response.body.modify_date)
 				this.gettimesheet();
 				//this.newTask= {}
-				this.newTask.Job_Header='';
-				this.newTask.Job_detail='';
+				this.newTask = this.default;
+				this.newTask.Name_Surname = this.accountname;
+				this.newTask.UID = this.uid;
+				this.newTask.create_date = Date.now();
+				this.newTask.Completed_date = Date.now();
+				this.newTask.Job_progress = 100;
+				this.newTask.Job_status = "Completed";
+				this.newTask.modify_date= Date.now();
+				// this.newTask.Job_Header='';
+				// this.newTask.Job_detail='';
+
 				}, (response) => {
 				//error
 				alert(response.body.error.message)
