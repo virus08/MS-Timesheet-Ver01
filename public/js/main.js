@@ -383,7 +383,7 @@ Vue.component('mail', {
 
 			 this.newTask.Job_Header = item.subject
 
-			 this.newTask.Job_detail = item.body.content
+			 this.newTask.Job_detail = item.body.content.slice(0,50)
 
 			 this.newTask.Job_date = moment(item.receivedDateTime).format("YYYY-MM-DD");
 

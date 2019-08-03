@@ -27,9 +27,8 @@ router.get('/', async function(req, res, next) {
   if (accessToken && userName) {
 
     parms.user = userName;
-    parms.source = 'https://es-timesheet.azurewebsites.net'
-    parms.AccountName = result.givenName+' '+result.surname;
-    parms.UID= result.id
+    // parms.source = 'https://es-timesheet.azurewebsites.net'
+    
 
     // Initialize Graph client
 
@@ -53,11 +52,11 @@ router.get('/', async function(req, res, next) {
 
       .get();
 
-      // parms.source = 'http://es-timesheet.fuangmali.info:8081'
+      parms.source = 'https://es-timesheet.azurewebsites.net'
 
-      // parms.AccountName = result.givenName+' '+result.surname;
+      parms.AccountName = result.givenName+' '+result.surname;
 
-      // parms.UID= result.id
+      parms.UID= result.id
 
       //parms.debug = JSON.stringify(parms,null,2);
 
@@ -69,7 +68,7 @@ router.get('/', async function(req, res, next) {
 
         parms.error = { status: `${err.code}: ${err.message}` };
 
-        parms.debug = JSON.stringify(err.body, null, 2);
+        // parms.debug = JSON.stringify(err.body, null, 2);
 
         res.render('error', parms);
 
@@ -101,7 +100,7 @@ router.get('/', async function(req, res, next) {
 
         .api(xapi)
 
-        //.top(10)
+        .top(100)
 
         .header("Prefer", "outlook.body-content-type=\"text\"")
 
@@ -117,7 +116,7 @@ router.get('/', async function(req, res, next) {
 
         parms.messages=JSON.stringify(xresult.value, null, 2);
 
-        parms.debug = JSON.stringify(parms, null, 2);
+        // parms.debug = JSON.stringify(parms, null, 2);
 
         res.render('mail', parms);
 
@@ -127,7 +126,7 @@ router.get('/', async function(req, res, next) {
 
         parms.error = { status: `${err.code}: ${err.message}` };
 
-        parms.debug = JSON.stringify(err.body, null, 2);
+        // parms.debug = JSON.stringify(err.body, null, 2);
 
         res.render('error', parms);
 
@@ -139,7 +138,7 @@ router.get('/', async function(req, res, next) {
 
       parms.error = { status: `${err.code}: ${err.message}` };
 
-      parms.debug = JSON.stringify(err.body, null, 2);
+      // parms.debug = JSON.stringify(err.body, null, 2);
 
       res.render('error', parms);
 
