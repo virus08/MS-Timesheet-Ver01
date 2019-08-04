@@ -19,7 +19,7 @@ router.get('/', async function(req, res, next) {
     }
 
     // Redirect to home
-    res.redirect('https://estimesheet.azurewebsites.net');
+    res.redirect('https://timesheet.vstecsservices.co.th');
   } else {
     // Otherwise complain
     res.render('error', { title: 'Error', message: 'Authorization error', error: { status: 'Missing code parameter' } });
@@ -31,7 +31,7 @@ router.get('/signout', function(req, res, next) {
   authHelper.clearCookies(res);
 
   // Redirect to home
-  res.redirect('https://estimesheet.azurewebsites.net');
+  res.redirect('https://timesheet.vstecsservices.co.th');
 });
 
 module.exports = router;
